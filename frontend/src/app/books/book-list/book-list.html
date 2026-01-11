@@ -1,0 +1,48 @@
+<div class="container mt-5">
+  <h2>Available Books</h2>
+
+  <!-- Search -->
+  <input [(ngModel)]="searchTerm" (input)="applyFilters()" class="form-control mb-3" placeholder="Search by title or author" />
+
+  <!-- Table -->
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>ISBN</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of paginatedBooks">
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.isbn }}</td>
+          <td>{{ book.available ? 'Available' : 'Borrowed' }}</td>
+          <td>
+            <button *ngIf="canBorrow(book)" (click)="borrow(book._id)" class="btn btn-primary btn-sm">Borrow</button>
+            <button *ngIf="canReturn(book)" (click)="return(book._id)" class="btn btn-success btn-sm">Return</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a class="page-link" (click)="goToPage(currentPage - 1)">Previous</a>
+      </li>
+      <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [class.active]="currentPage === i+1">
+        <a class="page-link" (click)="goToPage(i+1)">{{ i+1 }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>

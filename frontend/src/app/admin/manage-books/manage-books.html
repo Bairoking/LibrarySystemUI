@@ -1,0 +1,72 @@
+<div class="container mt-4">
+
+  <h3>Manage Books</h3>
+
+  <!-- 🔍 Search -->
+  <input
+    class="form-control mb-3"
+    placeholder="Search by title, author or ISBN"
+    [(ngModel)]="searchTerm">
+
+  <!-- ➕ Add Book -->
+  <div class="row g-2 mb-4">
+    <div class="col">
+      <input class="form-control" placeholder="Title" [(ngModel)]="title">
+    </div>
+    <div class="col">
+      <input class="form-control" placeholder="Author" [(ngModel)]="author">
+    </div>
+    <div class="col">
+      <input class="form-control" placeholder="ISBN" [(ngModel)]="isbn">
+    </div>
+    <div class="col">
+      <button class="btn btn-primary w-100" (click)="addBook()">Add</button>
+    </div>
+  </div>
+
+  <!-- 📘 Table -->
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of paginatedBooks">
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.isbn }}</td>
+        <td>
+          <span class="badge" [ngClass]="book.available ? 'bg-success' : 'bg-danger'">
+            {{ book.available ? 'Available' : 'Borrowed' }}
+          </span>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-danger" (click)="deleteBook(book._id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ⏮ Pagination -->
+  <div class="d-flex justify-content-between">
+    <button class="btn btn-secondary btn-sm"
+            (click)="page = page - 1"
+            [disabled]="page === 1">
+      Prev
+    </button>
+
+    <button class="btn btn-secondary btn-sm"
+            (click)="page = page + 1"
+            [disabled]="page * pageSize >= filteredBooks.length">
+      Next
+    </button>
+  </div>
+
+</div>
